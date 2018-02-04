@@ -1,0 +1,9 @@
+createdb tweetshose;
+
+CREATE TABLE tweets ( tweet_id serial PRIMARY KEY, original_tweet text, enriched_tweet text );
+
+To change password:
+ALTER USER postgres PASSWORD '<new password>';
+
+To view tables (inside psql shell):
+\dt
