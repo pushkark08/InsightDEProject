@@ -20,7 +20,6 @@ sc = SparkContext(conf = sp_config)
 sc.setLogLevel("WARN")
 log4jlogger = sc._jvm.org.apache.log4j
 logger = log4jlogger.LogManager.getLogger(__name__)
-logger.warn("okay done")
 
 elastic_nodes = [<your-es-cluster-nodes>]
 elastic = Elasticsearch(elastic_nodes, http_auth=('elastic', 'changeme'))
@@ -31,9 +30,14 @@ topic = ["allTweets"]
 kafka_params = {"metadata.broker.list": "<your-brokers>"}
 kafka_stream = KafkaUtils.createDirectStream(ssc, topic, kafka_params)
 
-
 url_stop_words="http://www.mit.edu/~ecprice/wordlist.10000"
 response= requests.get(url_stop_words)
+
+hostname = '<ip>'
+username = '<db-username>'
+password = '<db-pwd>'
+database = '<db-name>'
+connection = pgdb.connect(host=hostname, user=username, password=password, database=database)
 
 def get_stopwords():
 	common_words=response.content.split("\n")
@@ -46,6 +50,8 @@ def preprocess(tweet):
 	tweet = re.sub(r'(https|http)?:\/\/(\w|\.|\/|\?|\=|\&|\%)*\b', "", tweet)
 	return tweet
 
+
+# Example using Stanford Core NLP
 
 # from nltk.tag import StanfordNERTagger
 # from nltk.tokenize import word_tokenize
@@ -86,7 +92,7 @@ def process(tweet):
 	return (tokens, token_positions)
 
 
-def store(rdd):
+def query(rdd):
 	row_rdd = rdd.collect()
 
 	stop_words = get_stopwords()
@@ -124,12 +130,6 @@ def store(rdd):
 	put_in_db(connection, old_new_tweets)
 
 
-hostname = '<ip>'
-username = '<db-username>'
-password = '<db-pwd>'
-database = '<db-name>'
-connection = pgdb.connect(host=hostname, user=username, password=password, database=database)
-
 def put_in_db(conn, tweet_tuple):	
 	cur = conn.cursor()
 
@@ -143,7 +143,7 @@ def put_in_db(conn, tweet_tuple):
 tweet_stream = kafka_stream.map(lambda y : y[1].encode('utf-8')).map(lambda p : preprocess(p))
 processed_tweets = tweet_stream.map(lambda t : process(t))
 filtered_tweets = processed_tweets.filter(lambda c : len(c[1]) > 0)
-filtered_tweets.foreachRDD(store)
+filtered_tweets.foreachRDD(query)
 	
 ssc.start()
 ssc.awaitTermination()

@@ -20,7 +20,7 @@ def index():
 def show_tweets():
     cur = conn.cursor()
 
-    get_query = "SELECT original_tweet, enriched_tweet FROM tweets ORDER BY tweet_id DESC LIMIT 20;"
+    get_query = "SELECT original_tweet, enriched_tweet FROM tweets ORDER BY tweet_id DESC LIMIT 15;"
     
     cur.execute(get_query)
     
