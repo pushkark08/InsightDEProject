@@ -13,7 +13,8 @@ Tweets are ingested in real-time using Kafka which are then processed using Spar
 Different types of elasticsearch queries take different amounts of time. If I search for a query term in the complete text and title of the wikipedia pages, I can complete approx. 11700 searches/min. Whereas if I only search in the titles of wikipedia pages, I can do 19000 searches/min. So there is a tradeoff between search accuracy and processing time which should considered for a specific use case.
 
 # Future Work
-There is a lot of scope for improvement in the NLP module which extracts the key entities from the text. A custom NLP module can be built and substituted for the NLTK libraries.
+There is a lot of scope for improvement in the NLP module which extracts the key entities from the text. A custom NLP module can be built and substituted for the NLTK libraries which may give better performance and faster speed.
+Processed tweets may be stored in Elasticsearch to enable searching them.
 
 # Slides and Demo
 http://slides.wikify.club
