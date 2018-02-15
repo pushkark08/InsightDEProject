@@ -132,10 +132,9 @@ def query(rdd):
 
 def put_in_db(conn, tweet_tuple):	
 	cur = conn.cursor()
-
-	insert_query = "INSERT INTO tweets (original_tweet, enriched_tweet) VALUES (%s, %s)"
-	
-	cur.executemany(insert_query, tweet_tuple)
+	if len(tweet_tuple) > 0:
+		insert_query = "INSERT INTO tweets (original_tweet, enriched_tweet) VALUES (%s, %s)"
+		cur.executemany(insert_query, tweet_tuple)
 	conn.commit()
 	cur.close()
 
