@@ -1,5 +1,5 @@
-# Insight DE Project
-Wikify - Insight Data Engineering project
+# WIKIFY
+This is my Insight Data Engineering project which I completed in 3 weeks in Jan 2018.
 
 # Idea
 Suppose you come across a completely new term while reading an article or scrolling through your twitter feed and you are interested in knowing more about it. So what you would generally do is copy the text, search it on Google and read more from the links it provides. Instead of doing all this, what if you could just click on the word that interests you and it would take you to either its wikipedia page or any other source of information which would enhance your experience. This is the motivation behind this project.
